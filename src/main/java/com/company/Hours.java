@@ -7,14 +7,10 @@ class Hours extends TimeUnit {
 
     private final Pattern VALUE_PATTERN = Pattern.compile("^(1?[0-9]|2[0-3])$");
     private final Pattern INTERVAL_PATTERN = Pattern.compile("^(\\*(/(1?[0-9]|2[0-3]))?)$");
+    private final int index = 1;
     private final int minimumValue = 0;
     private final int range = 23;
     private String value;
-
-    @Override
-    public int index() {
-        return 1;
-    }
 
     @Override
     public String displayName() {
@@ -22,13 +18,13 @@ class Hours extends TimeUnit {
     }
 
     @Override
-    public SortedSet<Integer> values(String input) {
-        return extractValues(input, minimumValue, range);
+    public SortedSet<Integer> values() {
+        return extractValues(value, minimumValue, range);
     }
 
     @Override
     void initialize(String[] rawInput) {
-        value = rawInput[index()];
+        value = rawInput[index];
         assert checkValidity(value, INTERVAL_PATTERN, VALUE_PATTERN);
     }
 }

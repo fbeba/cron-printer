@@ -14,11 +14,9 @@ abstract class TimeUnit {
 
     private final TreeSet<Integer> timeValues = new TreeSet<>();
 
-    abstract int index();
-
     abstract String displayName();
 
-    abstract SortedSet<Integer> values(String input);
+    abstract SortedSet<Integer> values();
 
     abstract void initialize(String[] rawInput);
 

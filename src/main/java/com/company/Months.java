@@ -7,14 +7,10 @@ class Months extends TimeUnit {
 
     private final Pattern VALUE_PATTERN = Pattern.compile("^([1-9]|1[0-2])$");
     private final Pattern INTERVAL_PATTERN = Pattern.compile("^(\\*(/([1-9]|1[0-2]))?)$");
+    private final int index = 3;
     private final int minimumValue = 1;
     private final int range = 12;
     private String value;
-
-    @Override
-    public int index() {
-        return 3;
-    }
 
     @Override
     public String displayName() {
@@ -22,13 +18,13 @@ class Months extends TimeUnit {
     }
 
     @Override
-    public SortedSet<Integer> values(String input) {
-        return extractValues(input, minimumValue, range);
+    public SortedSet<Integer> values() {
+        return extractValues(value, minimumValue, range);
     }
 
     @Override
     void initialize(String[] rawInput) {
-        value = rawInput[index()];
+        value = rawInput[index];
         assert checkValidity(value, INTERVAL_PATTERN, VALUE_PATTERN);
     }
 }

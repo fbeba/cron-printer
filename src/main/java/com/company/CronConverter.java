@@ -28,7 +28,7 @@ class CronConverter {
     private List<String> convertToReadable(String[] input, int displayNameFieldLength) {
         List<String> result = new ArrayList<>();
         for (TimeUnit timeUnit : timeUnits) {
-            result.add(rightPad(timeUnit.displayName(), displayNameFieldLength) + buildValues(timeUnit.values(input[timeUnit.index()])));
+            result.add(rightPad(timeUnit.displayName(), displayNameFieldLength) + buildValues(timeUnit.values()));
         }
         result.add(rightPad("command", displayNameFieldLength) + buildCommand(input));
         return result;
