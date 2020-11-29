@@ -16,11 +16,11 @@ abstract class TimeUnit {
 
     abstract int index();
 
-    abstract boolean isValid(String input);
-
     abstract String displayName();
 
     abstract SortedSet<Integer> values(String input);
+
+    abstract void initialize(String[] rawInput);
 
     protected boolean checkValidity(String input, Pattern intervalPattern, Pattern valuePattern) {
         boolean isValidIntervalPattern = intervalPattern.matcher(input).matches();

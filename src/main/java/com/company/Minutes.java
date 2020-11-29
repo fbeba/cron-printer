@@ -9,6 +9,7 @@ class Minutes extends TimeUnit {
     private final Pattern INTERVAL_PATTERN = Pattern.compile("^(\\*(/[1-5]?[0-9])?)$");
     private final int minimumValue = 0;
     private final int range = 59;
+    private String value;
 
     @Override
     public int index() {
@@ -26,8 +27,9 @@ class Minutes extends TimeUnit {
     }
 
     @Override
-    public boolean isValid(String input) {
-        return checkValidity(input, INTERVAL_PATTERN, VALUE_PATTERN);
+    void initialize(String[] rawInput) {
+        value = rawInput[index()];
+        assert checkValidity(value, INTERVAL_PATTERN, VALUE_PATTERN);
     }
 }
 

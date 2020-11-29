@@ -12,19 +12,17 @@ class CronConverter {
     private final TimeUnit[] timeUnits = {new Minutes(), new Hours(), new DaysOfMonth(), new Months(), new DayOfWeek()};
 
     List<String> convert(String[] rawInput) {
-        validateTimeInput(rawInput);
+        Arrays.stream(timeUnits).forEach(unit -> unit.initialize(rawInput));
         final int displayNameLength = selectLongestDisplayName() + 2;
         return convertToReadable(rawInput, displayNameLength);
     }
 
     private int selectLongestDisplayName() {
-        int result = 0;
-        for (TimeUnit tu : timeUnits) {
-            if (tu.displayName().length() > result) {
-                result = tu.displayName().length();
-            }
-        }
-        return result;
+        return Arrays.stream(timeUnits)
+                .map(TimeUnit::displayName)
+                .map(String::length)
+                .reduce(Integer::max)
+                .orElse(15);
     }
 
     private List<String> convertToReadable(String[] input, int displayNameFieldLength) {
@@ -44,12 +42,6 @@ class CronConverter {
 
     private String buildCommand(String[] input) {
         return String.join(" ", Arrays.copyOfRange(input, 5, input.length));
-    }
-
-    private void validateTimeInput(String[] timeInputs) {
-        for (TimeUnit timeUnit : timeUnits) {
-            assert timeUnit.isValid(timeInputs[timeUnit.index()]);
-        }
     }
 
 }
