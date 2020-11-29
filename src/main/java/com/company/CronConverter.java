@@ -8,28 +8,29 @@ import static org.apache.commons.lang3.StringUtils.rightPad;
 class CronConverter {
 
     protected static final String OUTPUT_VALUE_SEPARATOR = " ";
+    protected static final int NAME_AND_VALUE_MINIMAL_SPACING = 2;
+    protected static final int DEFAULT_NAME_LENGTH = 15;
 
-    private final TimeUnit[] timeUnits = {new Minutes(), new Hours(), new DaysOfMonth(), new Months(), new DayOfWeek()};
+    private final List<TimeUnit> timeUnits = List.of(new Minutes(), new Hours(), new DaysOfMonth(), new Months(), new DayOfWeek());
 
     List<String> convert(String[] rawInput) {
-        Arrays.stream(timeUnits).forEach(unit -> unit.initialize(rawInput));
-        final int displayNameLength = selectLongestDisplayName() + 2;
+        timeUnits.forEach(unit -> unit.initialize(rawInput));
+        final int displayNameLength = selectLongestDisplayName() + NAME_AND_VALUE_MINIMAL_SPACING;
         return convertToReadable(rawInput, displayNameLength);
     }
 
     private int selectLongestDisplayName() {
-        return Arrays.stream(timeUnits)
+        return timeUnits.stream()
                 .map(TimeUnit::displayName)
                 .map(String::length)
                 .reduce(Integer::max)
-                .orElse(15);
+                .orElse(DEFAULT_NAME_LENGTH);
     }
 
     private List<String> convertToReadable(String[] input, int displayNameFieldLength) {
-        List<String> result = new ArrayList<>();
-        for (TimeUnit timeUnit : timeUnits) {
-            result.add(rightPad(timeUnit.displayName(), displayNameFieldLength) + buildValues(timeUnit.values()));
-        }
+        List<String> result = timeUnits.stream()
+                .map(unit -> rightPad(unit.displayName(), displayNameFieldLength) + buildValues(unit.values()))
+                .collect(Collectors.toList());
         result.add(rightPad("command", displayNameFieldLength) + buildCommand(input));
         return result;
     }
